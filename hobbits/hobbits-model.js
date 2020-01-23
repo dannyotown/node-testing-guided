@@ -1,23 +1,32 @@
-const db = require("../data/config")
+const db = require("../data/config");
 
 function list() {
-  return db("hobbits")
+  return db("hobbits");
 }
 
 function findById(id) {
-  return null
+  return db("hobbits")
+    .select("*")
+    .where({ id })
+    .first();
 }
 
-function insert(hobbit) {
-  return null
+async function insert(hobbit) {
+  const [id] = await db("hobbits").insert(hobbit);
+  return findById(id);
 }
 
-function update(id, changes) {
-  return null
+async function update(id, changes) {
+  await db("hobbits")
+    .where({ id })
+    .update(changes);
+  return findById(id);
 }
 
 function remove(id) {
-  return null
+  return db("hobbits")
+    .where({ id })
+    .del();
 }
 
 module.exports = {
@@ -25,5 +34,5 @@ module.exports = {
   findById,
   insert,
   update,
-  remove,
-}
+  remove
+};
